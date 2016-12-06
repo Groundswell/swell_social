@@ -1,0 +1,8 @@
+
+%span{ style: args[:css_style], id: args[:css_id] || 'subscribe_widget', class: "subscription-widget subscription-widget-#{parent_obj.class.name.underscore.gsub('/','__')}-#{parent_obj.id} #{( (sub = SwellSocial::ObjectSubscription.active.where( user_id: current_user.try( :id ), parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id ).first).present? ? 'subscription-widget-subscribed' : '' )}" }
+	= link_to swell_social.object_subscription_path( 0, obj_type: parent_obj.class.name, obj_id: parent_obj.id ), class: 'subscription-widget-control subscription-widget-unsubscribe', data: { method: :delete }, title: 'Unsubscribe' do
+		%i{ class: args[:unsub_icon_class] || 'fa fa-star' }
+		= args[:unsub_text]
+	= link_to swell_social.object_subscriptions_path( obj_type: parent_obj.class.name, obj_id: parent_obj.id ), class: 'subscription-widget-control subscription-widget-subscribe', method: :post, title:'Keep an eye on this' do
+		%i{ class: args[:sub_icon_class] || 'fa fa-star-o' }
+		= args[:sub_text]

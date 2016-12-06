@@ -1,0 +1,20 @@
+- vote = (args[:vote] || SwellSocial::Vote.where( user: current_user, context: context ).first) if current_user.present?
+- count_without = count_with = count = SwellSocial::Vote.where( context: context, parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id ).count
+- count_without = count_without - 1 if vote.present? && vote.parent_obj_type == parent_obj.class.name && vote.parent_obj_id == parent_obj.id
+- count_with = count_with + 1 unless vote.present? && vote.parent_obj_type == parent_obj.class.name && vote.parent_obj_id == parent_obj.id
+%span.swell_social_vote_multiple_choice_widget{ class: "#{(vote.try(:parent_obj_type) == parent_obj.class.name && vote.try(:parent_obj_id) == parent_obj.id ? 'active' : '')} #{vote.present? ? 'voted' : ''}", data: { vote: { context: context, parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id } } }
+	- if current_user.present?
+		%span.swell_social_vote_multiple_choice_widget_active
+			%span.badge=count_with
+			%a{ class: args[:link_class], href: swell_social.vote_path( id: context ), data: { method: :DELETE, remote: true } }=(args[:undo_label] || 'Undo Vote')
+		%span.swell_social_vote_multiple_choice_widget_voted
+			%span.badge=count_without
+			%a{ class: args[:link_class], href: swell_social.vote_path( id: context, parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id ), data: { method: :PUT, remote: true } }=(args[:label] || 'Vote')
+		%span.swell_social_vote_multiple_choice_widget_no_vote
+			%span.badge=count_without
+			%a{ class: args[:link_class], href: swell_social.votes_path( context: context, parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id, val: 1, vote_type: ( args[:vote_type] || 'multiple_choice' ) ), data: { method: :POST, remote: true } }=(args[:label] || 'Vote')
+
+	- else
+		%span.swell_social_vote_multiple_choice_widget_no_vote
+			%span.badge=count
+			%a{ class: args[:link_class], href: '#' }=(args[:label] || 'Vote')

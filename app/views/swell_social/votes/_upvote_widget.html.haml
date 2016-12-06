@@ -1,0 +1,17 @@
+- vote = (args[:vote] || SwellSocial::Vote.where( user: current_user, parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id ).first) if current_user.present?
+- count_without = count_with = count = SwellSocial::Vote.where( parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id ).up.count
+- count_without = count_without - 1 if vote.present?
+- count_with = count_with + 1 unless vote.present?
+%span.swell_social_upvote_widget{ class: "#{vote.present? ? 'voted' : ''}", data: { vote: { parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id } } }
+	- if current_user.present?
+		%span.swell_social_upvote_widget_voted
+			%span.badge=count_with
+			%a{ class: args[:link_class], href: swell_social.vote_path( id: parent_obj.id, parent_obj_type: parent_obj.class.name ), data: { method: :DELETE, remote: true } }=(args[:undo_label] || 'Undo Vote')
+		%span.swell_social_upvote_widget_no_vote
+			%span.badge=count_without
+			%a{ class: args[:link_class], href: swell_social.votes_path( parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id, val: 1 ), data: { method: :POST, remote: true } }=(args[:label] || 'Vote')
+
+	- else
+		%span.swell_social_upvote_widget_no_vote
+			%span.badge=count
+			%a{ class: args[:link_class], href: '#' }=(args[:label] || 'Vote')

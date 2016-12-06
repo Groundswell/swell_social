@@ -1,0 +1,17 @@
+
+#new_comment
+	- if current_user
+		= form_tag swell_social.comment_on_path( type: parent_obj.class.name, id: parent_obj.id ) do
+			= hidden_field_tag :comment_type, args[:comment_type] if args[:comment_type].present?
+			= hidden_field_tag :reply_to_id, args[:reply_to]
+			= hidden_field_tag :position, args[:position]
+			= hidden_field_tag :context_selector, args[:context_selector]
+			.input-group.form-group
+				%span.input-group-addon
+					= current_user.avatar_tag( width: 20 )
+				%span
+					= text_area_tag :content, '', class: 'form-control', placeholder: 'Write a comment'
+			.form-group
+				.pull-right= submit_tag 'Submit', class: 'btn btn-primary'
+	- else
+		Login to Comment

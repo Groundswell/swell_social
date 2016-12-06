@@ -1,0 +1,18 @@
+#new_post.modal.fade
+	.modal-dialog
+		.modal-content
+			.modal-header
+				.close{ type: :button, 'data-dismiss' => 'modal', 'aria-hidden' => 'true' }
+					&times;
+				%h4.modal-title
+					Post a Reply to
+					= @topic
+			= form_tag swell_social.discussion_posts_path( topic_id: @topic.id ) do
+				= hidden_field_tag :comment_type, 'ForumPost'
+				.modal-body
+					.form-group
+						= text_area_tag :content, '', class: 'form-control auto-size', placeholder: ' '
+				.modal-footer
+					.btn.btn-default.pull-left{ type: :button, 'data-dismiss' => 'modal' }
+						Close
+					= submit_tag 'Add', class: 'btn btn-primary'

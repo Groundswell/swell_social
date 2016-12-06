@@ -1,0 +1,28 @@
+- if @post.errors.count > 0
+	console.log('error');
+	var error = ('#{@post.errors.full_messages.join(',')}');
+	$('.page-wrapper').after('<div class="alert alert-danger validation-error-alert" role="alert">'+error+'</div>');
+	$('.validation-error-alert').delay( 3000 ).fadeOut( 1000, function() {$( this ).remove();});
+	- if params[:position] == 'append'
+		$('#{@context_selector}#comment-load-spinner').remove();
+		$('#{@context_selector}#new-comment-form .comment-form-submit').show();
+	- else
+		$('#{@context_selector}#comment-load-spinner').remove();
+		$('.collapse.in .comment-form-submit').show();
+		
+- else
+	$('#{@context_selector}#first-comment-header').hide();
+
+	- if params[:position] == 'append'
+		$('#{@context_selector}#comments').append("#{j render(partial: 'user_posts/comment', locals: { parent_obj: @parent_obj, user_post: @post, args: { reply_to: current_user.id, placeholder: 'Write a reply'}})}").trigger('initialize.subsequent');
+	- else
+		$('#{@context_selector}#comments').prepend("#{j render(partial: 'user_posts/comment', locals: { parent_obj: @parent_obj, user_post: @post, args: { reply_to: current_user.id, placeholder: 'Write a reply'}})}").trigger('initialize.subsequent');
+
+	$('#{@context_selector}#new-comment-form#{params[:reply_to_id]}').html("#{j render(partial: 'user_posts/comment_form', locals: {parent_obj: @parent_obj, args: { context_selector: params[:context_selector], position: params[:position], reply_to: params[:reply_to_id], placeholder: 'Thanks for your comment!'}})}").trigger('initialize.subsequent');
+
+	$('#{@context_selector}#comment-reply-#{params[:reply_to_id]}').removeClass('in');
+
+	- if params[:position] == 'append'
+		$('html, body').animate({ scrollTop: $('#{@context_selector}#new-comment-form').offset().top + $('#{@context_selector}#new-comment-form').height() - $( window ).height() + 100}, 1000);
+	- else
+		//$('html, body').animate({ scrollTop: $('#{@context_selector}#comments').offset().top - 100}, 1000);

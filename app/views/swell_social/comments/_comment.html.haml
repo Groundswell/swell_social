@@ -1,0 +1,30 @@
+
+.row.comment_block[comment]
+	.col-sm-2
+		= comment.user.avatar_tag( class: 'img-responsive' )
+	.col-xs-10
+		%strong
+			= comment.user
+		= time_ago_in_words( comment.created_at )
+		ago
+		.content{ style: 'padding: 1em;' }
+			- if comment.reply?
+				.quoted
+					.quote-head
+						In reply to:
+						%a{ href: profile_path( comment.reply_to.user ) }
+							= comment.reply_to.user.avatar_tag( width: 16 )
+							= comment.reply_to.user
+					.quote-body
+						- if comment.reply_to.active?
+							= raw comment.reply_to.content
+						- else
+							&lt;REDACTED&gt;
+			- if comment.content
+				%blockquote.small.color-white
+					= raw comment.content
+		- unless args[:disable_votes]
+			.actions
+				= render 'swell_social/votes/widget', parent_obj: comment, args: {}
+
+

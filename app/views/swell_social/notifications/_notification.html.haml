@@ -1,0 +1,15 @@
+
+.notification[notification]{ style: 'margin-top:1em;' }
+	- if notification.actor.present?
+		= notification.actor.avatar_tag( width: 26 )
+		- if notification.actor == current_user
+			You
+		- else
+			%a{ href: notification.actor.url }
+				= notification.actor
+
+	= raw notification.content
+
+	.timestamp{ style: 'font-size:75%;margin-left:30px;'}
+		= time_ago_in_words( notification.created_at )
+		ago

@@ -1,0 +1,17 @@
+.swell_social_vote_multiple_choice_widget
+{
+  display: inline;
+}
+
+.swell_social_vote_multiple_choice_widget>.swell_social_vote_multiple_choice_widget_active,
+.swell_social_vote_multiple_choice_widget>.swell_social_vote_multiple_choice_widget_voted,
+.swell_social_vote_multiple_choice_widget.voted.active>.swell_social_vote_multiple_choice_widget_voted,
+.swell_social_vote_multiple_choice_widget.voted>.swell_social_vote_multiple_choice_widget_no_vote
+{
+  display: none;
+}
+.swell_social_vote_multiple_choice_widget.active>.swell_social_vote_multiple_choice_widget_active,
+.swell_social_vote_multiple_choice_widget.voted>.swell_social_vote_multiple_choice_widget_voted
+{
+  display: inline;
+}

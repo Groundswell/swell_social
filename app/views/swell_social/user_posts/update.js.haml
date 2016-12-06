@@ -1,0 +1,9 @@
+- if @post.errors.count > 0
+	console.log('error');
+	var error = ('#{@post.errors.full_messages.join(',')}');
+	$('.page-wrapper').after('<div class="alert alert-danger validation-error-alert" role="alert">'+error+'</div>');
+	$('.validation-error-alert').delay( 3000 ).fadeOut( 1000, function() {$( this ).remove();});
+	$('#{@context_selector}#comment-load-spinner').remove();
+	$('.edit_user_post a').show();
+- else
+	$('#{@context_selector}#swell_social_comment_#{@post.id}').replaceWith("#{j render(partial: 'user_posts/comment', locals: {user_post: @post, args: { reply_to: current_user.id, placeholder: 'Write a reply'}})}").trigger('initialize.subsequent');

@@ -1,0 +1,6 @@
+.comments-for-container{ id: ( comments_for_container_id = "comments-for-container-#{SecureRandom.uuid}" ) }
+
+	.comments-for-new
+		= render 'user_posts/comment_form', parent_obj: parent_obj, args: { context_selector: "##{comments_for_container_id}", direction: :desc, reply_to: args[:parent].try(:id), autofocus: args[:autofocus], placeholder: (args[:parent].present? ? 'Add a reply' : 'Add a comment') }
+	.comments-for-pages
+		= render 'swell_social/comments/paged', parent_obj: parent_obj, args: { page: (args[:page] || 1).to_i, per: (args[:per] || 1).to_i, target: "##{comments_for_container_id}" }

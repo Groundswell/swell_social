@@ -1,0 +1,44 @@
+
+%span{ style: args[:css_style], id: args[:css_id] || 'vote_widget', class: args[:css_class] }
+	- if vote = SwellSocial::Vote.where( user_id: current_user.try( :id ), parent_obj_id: parent_obj.id, parent_obj_type: parent_obj.class.name ).last
+		-# this user has voted on this
+		
+		- if vote.up?
+			= link_to swell_social.vote_path( vote, (args[:delete_options] || {}) ), method: (args[:no_method] ? nil : :delete), data: args[:link_data], class: 'tool-tip vote-widget upvote' do
+				%i{ class: args[:vote_type] == 'vote' ? 'fa fa-arrow-circle-up' : 'fa fa-thumbs-up' }
+			%span.upvote.val
+				= vote_count( parent_obj.cached_upvote_count )
+			
+			= link_to swell_social.vote_path( vote, (args[:patch_options] || {}) ), method: (args[:no_method] ? nil : :patch), data: args[:link_data], class: 'vote-widget downvote' do
+				%i{ class: args[:vote_type] == 'vote' ? 'fa fa-arrow-circle-o-down' : 'fa fa-thumbs-o-down' }
+
+			%span.downvote.val
+				= vote_count( parent_obj.cached_downvote_count )
+
+		
+		- else
+			= link_to swell_social.vote_path( vote, (args[:patch_options] || {}) ), method: (args[:no_method] ? nil : :patch), data: args[:link_data], class: 'vote-widget upvote' do
+				%i{ class: args[:vote_type] == 'vote' ? 'fa fa-arrow-circle-o-up' : 'fa fa-thumbs-o-up' }
+			%span.upvote.val
+				= vote_count( parent_obj.cached_upvote_count )
+
+			= link_to swell_social.vote_path( vote, (args[:delete_options] || {}) ), title: 'Disliked', method: (args[:no_method] ? nil : :delete), data: args[:link_data], class: 'tool-tip vote-widget downvote' do
+				%i{ class: args[:vote_type] == 'vote' ? 'fa fa-arrow-circle-down' : 'fa fa-thumbs-down' }
+			
+			%span.downvote.val
+				= vote_count( parent_obj.cached_downvote_count )
+
+	- else
+		-# No vote for this yet
+		= link_to swell_social.votes_path( (args[:post_options] || {}).merge(parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id, val: 1, vote_type: ( args[:vote_type] || 'like' )) ), method: (args[:no_method] ? nil : :post), data: args[:link_data], class: 'vote-widget upvote' do
+			%i{ class: args[:vote_type] == 'vote' ? 'fa fa-arrow-circle-o-up' : 'fa fa-thumbs-o-up' }
+
+		%span.upvote.val
+			= vote_count( parent_obj.cached_upvote_count )
+			
+		= link_to swell_social.votes_path( (args[:post_options] || {}).merge( parent_obj_type: parent_obj.class.name, parent_obj_id: parent_obj.id, val: -1, vote_type: ( args[:vote_type] || 'like' )) ), method: (args[:no_method] ? nil : :post), data: args[:link_data], class: 'vote-widget downvote' do
+			%i{ class: args[:vote_type] == 'vote' ? 'fa fa-arrow-circle-o-down' : 'fa fa-thumbs-o-down' }
+
+		%span.downvote.val
+			= vote_count( parent_obj.cached_downvote_count )
+

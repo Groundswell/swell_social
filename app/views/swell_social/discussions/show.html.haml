@@ -1,0 +1,41 @@
+.container
+	.row
+		.col-xs-10
+			%ol.breadcrumb
+				%li
+					%a{ href: swell_social.discussions_path }
+						Discussions
+				%li
+					= @discussion
+		.col-xs-2
+			%a.btn.btn-success{ href: '#new_topic', data: { toggle: :modal, target: '#new_topic' } }
+				%i.fa.fa-plus
+				Post
+	.row
+		.col-xs-12
+			%table.table
+				%thead
+					%th
+
+				- @topics.each do |topic|
+					%tr
+						%td
+							%a{ href: topic.path }
+								= truncate topic.preview
+							= link_to topic.user, topic.user.path
+							= topic.created_at.to_s( :long )
+						%td
+							= pluralize topic.posts.count, 'Reply'
+							and
+							= pluralize topic.cached_impression_count, 'View'
+						%td
+							- if topic.last_post.present?
+								Last:
+								= topic.last_post.preview
+								by
+								= link_to topic.last_post.user, topic.last_post.user.path
+							- else
+								No replies yet.
+
+
+= render 'swell_social/discussion_topics/new_modal'

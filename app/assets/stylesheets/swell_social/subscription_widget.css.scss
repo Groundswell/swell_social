@@ -1,0 +1,12 @@
+.subscription-widget
+{
+  display: inline-block;
+}
+.subscription-widget>.subscription-widget-unsubscribe, .subscription-widget.subscription-widget-subscribed>.subscription-widget-subscribe
+{
+	display: none;
+}
+.subscription-widget.subscription-widget-subscribed>.subscription-widget-unsubscribe, .subscription-widget>.subscription-widget-subscribe
+{
+  	display: inherit;
+}

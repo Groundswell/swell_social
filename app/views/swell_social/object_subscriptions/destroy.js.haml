@@ -1,0 +1,8 @@
+- if @sub.nil?
+- elsif @sub.errors.count > 0
+	var error = ('#{@sub.errors.full_messages.join(',')}');
+	$('.page-wrapper').after('<div class="alert alert-danger validation-error-alert" role="alert">'+error+'</div>');
+	$('.validation-error-alert').delay( 3000 ).fadeOut( 1000, function() {$( this ).remove();});
+	$('#sub-'+#{@sub.parent_obj_id}).html('<i class="fa fa-eye-slash"></i>Unfollow');
+- else
+	$('.subscription-widget-#{@sub.parent_obj.class.name.underscore.gsub('/','__')}-#{@sub.parent_obj.id}').removeClass('subscription-widget-subscribed');

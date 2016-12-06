@@ -1,0 +1,38 @@
+.container
+	.row
+		.col-xs-12
+			%h1
+				Discussions
+
+	.row
+		.col-xs-12
+			%table.table
+				%thead
+					%th
+					%th Stats
+					%th Last Post
+				- @discussions.each do |discussion|
+					%tr
+						%td
+							= link_to discussion.title, discussion_path( discussion )
+							.small
+								= raw discussion.description
+						%td
+							= pluralize discussion.posts.count, 'Post'
+							in
+							%br
+							= pluralize discussion.topics.count, 'Topic'
+							
+						%td
+							- if discussion.last_post.present?
+								%a{ href: discussion.last_post.path }
+									= truncate discussion.last_post.preview
+
+								.small
+									by
+									= discussion.last_post.user
+									at
+									= discussion.last_post.created_at.to_s( :long )
+							- else
+								= "---"
+							

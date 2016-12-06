@@ -1,0 +1,7 @@
+- if @sub.errors.count > 0
+	var error = ('#{@sub.errors.full_messages.join(',')}');
+	$('.page-wrapper').after('<div class="alert alert-danger validation-error-alert" role="alert">'+error+'</div>');
+	$('.validation-error-alert').delay( 3000 ).fadeOut( 1000, function() {$( this ).remove();});
+	$('#sub-'+#{@sub.parent_obj_id}).html('<i class="fa fa-eye"></i>Follow');
+- else
+	$('#sub-'+#{@sub.parent_obj_id}).html("#{j render(partial: 'swell_social/object_subscriptions/widget', locals: {parent_obj: @sub.parent_obj, args: { button_class: @button_class, sub_icon_class: 'fa fa-eye', unsub_icon_class: 'fa fa-eye-slash', sub_text: 'Follow', unsub_text: 'Unfollow' }})}");

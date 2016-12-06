@@ -1,0 +1,15 @@
+.swell_social_upvote_widget
+{
+  display: inline;
+}
+
+.swell_social_upvote_widget>.swell_social_upvote_widget_voted,
+.swell_social_upvote_widget.voted>.swell_social_upvote_widget_no_vote
+{
+  display: none;
+}
+.swell_social_upvote_widget.voted>.swell_social_upvote_widget_voted,
+.swell_social_upvote_widget>.swell_social_upvote_widget_no_vote
+{
+  display: inline;
+}

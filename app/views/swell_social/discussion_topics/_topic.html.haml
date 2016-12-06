@@ -1,0 +1,15 @@
+.row[topic]
+	.col-xs-2
+		= topic.user.avatar_tag( class: 'img-responsive' )
+	.col-xs-10
+		%strong
+			= topic.user
+		= time_ago_in_words( topic.created_at )
+		ago
+		.content{ style: 'padding: 1em;' }
+			- if topic.content
+				%blockquote.small.color-white
+					= raw topic.content
+		- unless args[:disable_votes]
+			.actions
+				= render 'swell_social/votes/widget', parent_obj: topic, args: {}

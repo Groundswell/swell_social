@@ -1,0 +1,35 @@
+.container
+	.row
+		.col-xs-10
+			%ol.breadcrumb
+				%li
+					%a{ href: swell_social.discussions_path }
+						Discussions
+				%li
+					%a{ href: swell_social.discussion_path( @discussion ) }
+						= @discussion
+				%li
+					= @topic
+		.col-xs-2
+			%a.btn.btn-success{ href: '#new_post', data: { toggle: :modal, target: '#new_post' } }
+				%i.fa.fa-plus
+				Post
+	= render 'swell_social/discussion_topics/topic', topic: @topic, args: {}
+
+	= raw paginate @posts
+
+	- @posts.each do |post|
+		= render 'swell_social/discussion_posts/post', post: post, args: {}
+	
+	= raw paginate @posts
+
+
+	%h4 Quick Reply
+	= form_tag swell_social.discussion_posts_path( topic_id: @topic.id ) do
+		.form-group
+			= text_area_tag :content, '', class: 'form-control auto-size', placeholder: ' '
+		.form-group
+			= submit_tag 'Add', class: 'btn btn-primary'
+
+
+= render 'swell_social/discussion_posts/new_modal'

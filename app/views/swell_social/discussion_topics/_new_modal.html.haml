@@ -1,0 +1,22 @@
+#new_topic.modal.fade
+	.modal-dialog
+		.modal-content
+			.modal-header
+				.close{ type: :button, 'data-dismiss' => 'modal', 'aria-hidden' => 'true' }
+					&times;
+				%h4.modal-title
+					Post a Topic in
+					= @discussion
+			= form_tag swell_social.discussion_topics_path( discussion_id: @discussion.id, type: @discussion.class.name, id: @discussion.id ) do
+				= hidden_field_tag :comment_type, 'ForumTopic'
+				.modal-body
+					.form-group
+						= label_tag :subject
+						= text_field_tag :subject, '', class: 'form-control'
+					.form-group
+						= text_area_tag :content, '', class: 'form-control auto-size', placeholder: ' '
+
+				.modal-footer
+					.btn.btn-default.pull-left{ type: :button, 'data-dismiss' => 'modal' }
+						Close
+					= submit_tag 'Add', class: 'btn btn-primary'

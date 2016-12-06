@@ -1,0 +1,5 @@
+- if @vote.multiple_choice?
+	$(".swell_social_vote_multiple_choice_widget[data-vote-context='#{j @vote.context}']").removeClass('voted').removeClass('active')
+- else
+	$(".swell_social_upvote_widget[data-vote-parent-obj-type='#{j @vote.parent_obj_type}'][data-vote-parent-obj-id='#{@vote.parent_obj_id}']").removeClass('voted')
+	$(".swell_social_vote_widget_#{@vote.user.id}_#{@vote.parent_obj.id}_#{@vote.parent_obj.class.name.underscore.gsub(/\//,'_')}").html("#{j render(partial: 'swell_social/votes/widget', locals: {parent_obj: @vote.parent_obj, args: { disable_identifier_class: true, vote_type: params[:vote_type] }})}");
