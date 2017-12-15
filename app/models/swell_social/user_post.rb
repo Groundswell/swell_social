@@ -3,7 +3,6 @@ module SwellSocial
 
 	class UserPost < ActiveRecord::Base
 		self.table_name = 'user_posts'
-		include SwellMedia::Concerns::TagArrayConcern
 
 		before_save	:set_cached_counts, :update_content_hash
 

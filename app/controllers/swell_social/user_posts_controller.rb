@@ -1,10 +1,10 @@
 module SwellSocial
 	class UserPostsController < ApplicationController
-		
+
 		before_filter 	:authenticate_user!
 		before_filter   :get_parent_obj, only: :create
 
-		
+
 		def admin
 			authorize!( :admin, Comment )
 			@posts = UserPost.order( created_at: :desc )
@@ -28,7 +28,7 @@ module SwellSocial
 					SwellSocial::UserPostWorker.perform_async_if_possible( @post.id )
 
 					# throw site event
-					record_user_event( event: 'comment', obj: @post, on: @parent_obj, content: "commented on the #{@post.parent_obj.class.name.downcase} <a href='#{@post.parent_obj.url}'>#{@post.parent_obj.try( :title ) }</a>!" )
+					# record_user_event( event: 'comment', obj: @post, on: @parent_obj, content: "commented on the #{@post.parent_obj.class.name.downcase} <a href='#{@post.parent_obj.url}'>#{@post.parent_obj.try( :title ) }</a>!" )
 					format.html { redirect_to(:back, set_flash: 'Thanks for your comment') }
 					format.js {}
 				else
@@ -83,7 +83,7 @@ module SwellSocial
 
 			def get_parent_obj
 				if params[:type].present?
-					@parent_obj = params[:type].constantize.where( id: params[:id] ).first 
+					@parent_obj = params[:type].constantize.where( id: params[:id] ).first
 				else
 					set_flash 'Can not comment without parent', :error
 					redirect_to :back
