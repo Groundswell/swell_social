@@ -6,7 +6,7 @@ source "https://rubygems.org"
 gemspec
 
 # these are for rspec...
-gem 'swell_media', git: 'git://github.com/playswell/swell_media.git', branch: 'v2'
+gem 'swell_media', git: 'git://github.com/Groundswell/swell_media.git'
 # gem 'resque'
 
 # gem 'link_thumbnailer'
@@ -24,4 +24,3 @@ gem 'swell_media', git: 'git://github.com/playswell/swell_media.git', branch: 'v
 
 # To use debugger
 # gem 'debugger'
-
