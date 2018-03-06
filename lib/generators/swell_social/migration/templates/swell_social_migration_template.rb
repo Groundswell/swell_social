@@ -1,5 +1,5 @@
-class SwellSocialMigration < ActiveRecord::Migration
-	# V2.1
+class SwellSocialMigration < ActiveRecord::Migration[5.1]
+	# For R5
 
 	def change
 

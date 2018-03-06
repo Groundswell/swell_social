@@ -6,7 +6,7 @@ module SwellSocial
 			if params[:id] == 'read_all'
 				current_user.notifications.not_read.update_all( status: 3 )
 			end
-			redirect_to :back
+			redirect_back( fallback_location: '/' )
 		end
 
 	end

@@ -2,7 +2,7 @@
 module SwellSocial
 	class ObjectSubscriptionsController < ApplicationController
 
-		before_filter :authenticate_user!
+		before_action :authenticate_user!
 
 		def create
 			@sub = ObjectSubscription.where( user_id: current_user.id, parent_obj_type: params[:obj_type], parent_obj_id: params[:obj_id] ).first_or_initialize
@@ -10,7 +10,6 @@ module SwellSocial
 			
 			respond_to do |format|
 			  if @sub.active!
-					record_user_event( event: "subscribe", on: @sub.parent_obj, obj: @sub, content: "subscribed to the #{@sub.parent_obj.class.name.downcase} <a href='#{@sub.parent_obj.try(:url)}'>#{@sub.parent_obj.to_s}</a>!" )
 					format.html { redirect_to(:back, set_flash: 'Subscribed') }
 					format.js { render 'create' }
 			  else
@@ -34,7 +33,6 @@ module SwellSocial
 
 			respond_to do |format|
 				if @sub.present? && @sub.delete
-					record_user_event( event: "unsubscribe", user: current_user, on: @sub.parent_obj, content: "unsubscribed from the #{@sub.parent_obj.class.name.downcase} <a href='#{@sub.parent_obj.try(:url)}'>#{@sub.parent_obj.to_s}</a>!" )
 					format.html { redirect_to(:back, set_flash: 'Unsubscribed') }
 					format.js { render 'destroy' }
 				else
@@ -46,6 +44,7 @@ module SwellSocial
 		end
 
 		def show
+			# wtf - http delete method doesn't work????
 			destroy
 		end
 
@@ -62,19 +61,19 @@ module SwellSocial
 			@sub.attributes = params.require( :object_subscription ).permit( :mute, :availability, :status )
 
 			if @sub.save
-
-				redirect_to(:back, set_flash: 'Success')
+				set_flash "Success"
+				redirect_back( fallback_location: '/' )
 
 			else
-
-				redirect_to(:back, set_flash: 'Error')
-
+				set_flash "Error"
+				redirect_back( fallback_location: '/' )
 			end
 
 		end
 
 
 		def index
+			# huh?
 			create
 		end
 

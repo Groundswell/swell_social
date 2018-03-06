@@ -1,6 +1,6 @@
 module SwellSocial
 
-	class Notification < ActiveRecord::Base
+	class Notification < ApplicationRecord
 		self.table_name = 'notifications'
 
 		before_save :set_default_publish_at

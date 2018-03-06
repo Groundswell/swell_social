@@ -1,7 +1,7 @@
 
 module SwellSocial
 
-	class UserPost < ActiveRecord::Base
+	class UserPost < ApplicationRecord
 		self.table_name = 'user_posts'
 
 		before_save	:set_cached_counts, :update_content_hash
