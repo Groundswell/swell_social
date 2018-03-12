@@ -67,6 +67,7 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			
 			t.string			:subject
 			t.text				:content
+			t.integer 			:rating # for reviews
 
 			t.integer			:cached_vote_count,				default: 0, 	limit: 8
 			t.float				:cached_vote_score,				default: 0, 	limit: 8
