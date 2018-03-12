@@ -1,7 +1,7 @@
 
 module SwellSocial
 	class VotesController < ApplicationController
-		before_filter :authenticate_user!
+		before_action :authenticate_user!
 
 
 		def index
@@ -16,7 +16,7 @@ module SwellSocial
 				@vote.update_parent_caches
 
 				respond_to do |format|
-					format.html { redirect_to :back }
+					format.html { redirect_back( fallback_location: '/' ) }
 					format.js {}
 				end
 			else
@@ -40,7 +40,7 @@ module SwellSocial
 			@vote.update_parent_caches
 
 			respond_to do |format|
-				format.html { redirect_to :back }
+				format.html { redirect_back( fallback_location: '/' ) }
 				format.js {}
 			end
 		end
@@ -70,7 +70,7 @@ module SwellSocial
 			end
 
 			respond_to do |format|
-				format.html { redirect_to :back }
+				format.html { redirect_back( fallback_location:'/' ) }
 				format.js {}
 			end
 		end

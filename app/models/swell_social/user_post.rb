@@ -16,11 +16,11 @@ module SwellSocial
 
 
 		belongs_to :user, class_name: SwellMedia.registered_user_class
-		belongs_to :actor, class_name: SwellMedia.registered_user_class
+		belongs_to :actor, class_name: SwellMedia.registered_user_class, optional: true
 		belongs_to :parent_obj, polymorphic: true
 
 		has_many 		:replies, class_name: UserPost.name, foreign_key: 'reply_to_id', inverse_of: :reply_to
-		belongs_to 	:reply_to, class_name: UserPost.name, inverse_of: :replies
+		belongs_to 	:reply_to, class_name: UserPost.name, inverse_of: :replies, optional: true
 
 		acts_as_taggable_array_on :tags
 

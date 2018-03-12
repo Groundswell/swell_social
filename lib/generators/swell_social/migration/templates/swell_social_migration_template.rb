@@ -99,6 +99,7 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.references 		:user
 			t.references 		:site
 			t.integer 			:val, 			default: 0  # enum -1 down, 1 up
+			t.string 			:vote_type
 			t.string 			:context,		default: 'vote'
 			t.text 				:content # in case of comment
 			t.hstore			:properties
