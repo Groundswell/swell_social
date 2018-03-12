@@ -14,7 +14,6 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.integer		:status,		default: 1 # unread, read, archived, trash
 			t.timestamps
 		end
-		add_index :messages, :sender_id
 		add_index :messages, [ :user_id, :status ]
 
 		create_table :notifications do |t|
@@ -22,14 +21,14 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.references	:actor
 			t.references 	:parent_obj, polymorphic: true  # to help de-dup
 			t.references 	:activity_obj, polymorphic: true
-			t.string			:title
-			t.text				:content
-			t.integer			:status,		default: 1 # hidden, unread, read, archived, trash,
+			t.string		:title
+			t.text			:content
+			t.integer		:status,		default: 1 # hidden, unread, read, archived, trash,
 			t.integer 		:parent_id, :null => true, :index => true
 			t.integer 		:lft, :null => false, :index => true
 			t.integer 		:rgt, :null => false, :index => true
 			t.integer 		:children_count, :null => false, :default => 0
-			t.string 			:action, default: nil
+			t.string 		:action, default: nil
 			t.datetime		:publish_at
 			t.timestamps
 		end
@@ -53,8 +52,7 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.hstore			:properties
 			t.timestamps
 		end
-		add_index :object_subscriptions, :user_id
-		add_index :object_subscriptions, [ :parent_obj_id, :parent_obj_type ]
+		add_index :object_subscriptions, [ :user_id, :parent_obj_id, :parent_obj_type ], name: 'idx_subs_on_parent'
 		
 
 		# base for comments
@@ -68,7 +66,6 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.string 			:slug
 			
 			t.string			:subject
-			t.string			:slug
 			t.text				:content
 
 			t.integer			:cached_vote_count,				default: 0, 	limit: 8
@@ -88,9 +85,7 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.string 			:mentions, array: true, default: '{}'
 			t.timestamps
 		end
-		add_index :user_posts, :user_id
-		add_index :user_posts, [ :parent_obj_id, :parent_obj_type ]
-		add_index :user_posts, :reply_to_id
+		add_index :user_posts, [ :user_id, :parent_obj_id, :parent_obj_type ], name: 'idx_user_posts_on_parent'
 		add_index :user_posts, :slug, unique: true
 		add_index :user_posts, :tags, using: 'gin'
 		add_index :user_posts, [:created_at, :mentions]
@@ -108,8 +103,7 @@ class SwellSocialMigration < ActiveRecord::Migration[5.1]
 			t.hstore			:properties
 			t.timestamps
 		end
-		add_index :votes, :user_id
-		add_index :votes, [ :parent_obj_id, :parent_obj_type ]
+		add_index :votes, [  :user_id, :parent_obj_id, :parent_obj_type ], name: 'idx_votes_on_parent'
 		add_index :votes, [ :parent_obj_id, :parent_obj_type, :context ]
 		add_index :votes, [ :user_id, :context ]
 
