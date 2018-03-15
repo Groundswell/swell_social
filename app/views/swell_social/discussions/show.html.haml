@@ -22,7 +22,7 @@
 						%td
 							%a{ href: topic.path }
 								= truncate topic.preview
-							= link_to topic.user, topic.user.path
+							= link_to topic.user, topic.user.profile_path
 							= topic.created_at.to_s( :long )
 						%td
 							= pluralize topic.posts.count, 'Reply'
@@ -33,7 +33,7 @@
 								Last:
 								= topic.last_post.preview
 								by
-								= link_to topic.last_post.user, topic.last_post.user.path
+								= link_to topic.last_post.user, topic.last_post.user.profile_path
 							- else
 								No replies yet.
 

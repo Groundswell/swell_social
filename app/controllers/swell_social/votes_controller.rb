@@ -1,7 +1,7 @@
 
 module SwellSocial
 	class VotesController < ApplicationController
-		before_filter :authenticate_user!
+		before_action :authenticate_user!
 
 
 		def index
@@ -13,10 +13,10 @@ module SwellSocial
 			@vote.val = params[:val].try( :to_i ) || params[:up].try( :to_i ) || 1
 
 			if @vote.save
-				add_user_event_for( @vote )
+				@vote.update_parent_caches
 
 				respond_to do |format|
-					format.html { redirect_to :back }
+					format.html { redirect_back( fallback_location: '/' ) }
 					format.js {}
 				end
 			else
@@ -24,7 +24,7 @@ module SwellSocial
 				set_flash @error, :error, @vote
 
 				respond_to do |format|
-					format.html { redirect_to :back }
+					format.html { redirect_back( fallback_location: '/' ) }
 					format.js {}
 				end
 			end
@@ -40,7 +40,7 @@ module SwellSocial
 			@vote.update_parent_caches
 
 			respond_to do |format|
-				format.html { redirect_to :back }
+				format.html { redirect_back( fallback_location: '/' ) }
 				format.js {}
 			end
 		end
@@ -66,36 +66,15 @@ module SwellSocial
 			puts "@vote #{@vote.to_json}"
 
 			if @vote.save
-				add_user_event_for( @vote )
+				@vote.update_parent_caches
 			end
 
 			respond_to do |format|
-				format.html { redirect_to :back }
+				format.html { redirect_back( fallback_location:'/' ) }
 				format.js {}
 			end
 		end
 
-
-		private
-			def add_user_event_for( vote )
-				if vote.up?
-					event = 'upvote'
-					if vote.vote_type == 'like'
-						verb = 'liked'
-					else
-						verb = 'up voted'
-					end
-				else # downvote
-					event = 'downvote'
-					if vote.vote_type == 'like'
-						verb = 'disliked'
-					else
-						verb = 'down voted'
-					end
-				end
-				user_event = record_user_event( event: event, on: vote.parent_obj, obj: vote, content: "#{verb} <a href='#{vote.parent_obj.url}'>#{vote.parent_obj.to_s}</a>", rate: 10.seconds, update_caches: false )
-				vote.update_parent_caches
-			end
 
 	end
 end

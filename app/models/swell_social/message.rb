@@ -1,5 +1,5 @@
 module SwellSocial
-	class Message < ActiveRecord::Base
+	class Message < ApplicationRecord
 		self.table_name = 'messages'
 
 		belongs_to :user, class_name: SwellMedia.registered_user_class

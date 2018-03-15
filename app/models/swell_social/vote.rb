@@ -1,5 +1,5 @@
 module SwellSocial
-	class Vote < ActiveRecord::Base
+	class Vote < ApplicationRecord
 		self.table_name = 'votes'
 
 		enum val: { 'down' => -1, 'up' => 1 }

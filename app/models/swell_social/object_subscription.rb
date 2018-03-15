@@ -1,6 +1,6 @@
 module SwellSocial
 
-	class ObjectSubscription < ActiveRecord::Base
+	class ObjectSubscription < ApplicationRecord
 		self.table_name = 'object_subscriptions'
 
 		enum status: { 'active' => 1, 'deleted' => 2 }
