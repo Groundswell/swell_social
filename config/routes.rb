@@ -4,10 +4,12 @@ SwellSocial::Engine.routes.draw do
 
 	resources :comments, only: [:index, :new, :edit, :show]
 
-	resources :discussions do 
-		resources :topics, controller: :discussion_topics
+	if SwellSocial::discussion_path
+		resources :discussions, path: SwellSocial.discussion_path do 
+			resources :topics, controller: :discussion_topics
+		end
+		resources :discussion_posts
 	end
-	resources :discussion_posts
 	resources :discussion_admin
 
 	resources :notifications

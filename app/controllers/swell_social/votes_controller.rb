@@ -24,7 +24,7 @@ module SwellSocial
 				set_flash @error, :error, @vote
 
 				respond_to do |format|
-					format.html { redirect_to :back }
+					format.html { redirect_back( fallback_location: '/' ) }
 					format.js {}
 				end
 			end
